@@ -1,0 +1,17 @@
+{
+    "version": 2,
+    "name": "AIRBNB-CLONE",
+    "builds": [
+      {
+        "src": "server/api/**/*.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/api/(.*)",
+        "dest": "/server/api/$1"
+      }
+    ]
+  }
+  
