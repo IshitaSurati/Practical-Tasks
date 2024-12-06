@@ -1,118 +1,53 @@
-const Expense = require('../models/Expense'); // Assuming you have an Expense model
+const Expense = require('../models/Expense');
 
-// Add an expense
+// Add Expense
 const addExpense = async (req, res) => {
   try {
     const { amount, description, date, category, paymentMethod } = req.body;
-
-    // Check if required fields are provided
-    if (!amount || !date || !category) {
-      return res.status(400).json({ message: "Missing required fields: amount, date, and category are mandatory." });
-    }
-
-    // Ensure the user exists in the request (from authentication middleware)
-    if (!req.user) {
-      return res.status(401).json({ message: "User not authenticated" });
-    }
-
-    // Create a new expense with user info attached
-    const newExpense = new Expense({
-      amount,
-      description,
-      date,
-      category,
-      paymentMethod,
-      user: req.user._id, // Assuming `req.user` has the user's ID from the token
-    });
-
-    // Save the expense to the database
-    const expense = await newExpense.save();
-
-    res.status(201).json(expense);
+    const expense = new Expense({ ...req.body, user: req.user.id });
+    const savedExpense = await expense.save();
+    res.status(201).json(savedExpense);
   } catch (error) {
-    console.error("Error adding expense:", error);
-    res.status(500).json({ message: "Server error, please try again later." });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Get all expenses for the logged-in user
+// Get Expenses
 const getExpenses = async (req, res) => {
   try {
-    // Ensure the user exists in the request (from authentication middleware)
-    if (!req.user) {
-      return res.status(401).json({ message: "User not authenticated" });
-    }
-
-    const expenses = await Expense.find({ user: req.user._id }); // Find expenses for the logged-in user
-    res.status(200).json(expenses);
+    const expenses = await Expense.find({ user: req.user.id });
+    res.json(expenses);
   } catch (error) {
-    console.error("Error getting expenses:", error);
-    res.status(500).json({ message: "Server error, please try again later." });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Update an expense
+// Update Expense
 const updateExpense = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    // Check if the expense exists
-    const expense = await Expense.findById(id);
-
-    if (!expense) {
-      return res.status(404).json({ message: "Expense not found" });
+    const expense = await Expense.findById(req.params.id);
+    if (!expense || expense.user.toString() !== req.user.id) {
+      return res.status(404).json({ message: 'Expense not found or unauthorized' });
     }
-
-    // Ensure the user exists in the request (from authentication middleware)
-    if (!req.user) {
-      return res.status(401).json({ message: "User not authenticated" });
-    }
-
-    // Check if the expense belongs to the logged-in user
-    if (expense.user.toString() !== req.user._id.toString()) {
-      return res.status(401).json({ message: "Not authorized to update this expense" });
-    }
-
-    // Update the expense (only update provided fields)
     Object.assign(expense, req.body);
     await expense.save();
-
-    res.status(200).json(expense);
+    res.json(expense);
   } catch (error) {
-    console.error("Error updating expense:", error);
-    res.status(500).json({ message: "Server error, please try again later." });
+    res.status(500).json({ message: error.message });
   }
 };
 
-// Delete an expense
+// Delete Expense
 const deleteExpense = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    // Check if the expense exists
-    const expense = await Expense.findById(id);
-
-    if (!expense) {
-      return res.status(404).json({ message: "Expense not found" });
+    const expense = await Expense.findById(req.params.id);
+    if (!expense || expense.user.toString() !== req.user.id) {
+      return res.status(404).json({ message: 'Expense not found or unauthorized' });
     }
-
-    // Ensure the user exists in the request (from authentication middleware)
-    if (!req.user) {
-      return res.status(401).json({ message: "User not authenticated" });
-    }
-
-    // Check if the expense belongs to the logged-in user
-    if (expense.user.toString() !== req.user._id.toString()) {
-      return res.status(401).json({ message: "Not authorized to delete this expense" });
-    }
-
-    // Delete the expense
     await expense.remove();
-
-    res.status(200).json({ message: "Expense removed successfully" });
+    res.json({ message: 'Expense removed successfully' });
   } catch (error) {
-    console.error("Error deleting expense:", error);
-    res.status(500).json({ message: "Server error, please try again later." });
+    res.status(500).json({ message: error.message });
   }
 };
 
