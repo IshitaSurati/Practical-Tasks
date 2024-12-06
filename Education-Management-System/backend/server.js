@@ -24,7 +24,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/submissions', submissionRoutes);
 app.get("/", (req, res) => {
-  res.send("Welcome to Freelancer Project Management System API");
+  res.send("Welcome to Education Management System API");
 });
 
 // const PORT = process.env.PORT || 4000;
