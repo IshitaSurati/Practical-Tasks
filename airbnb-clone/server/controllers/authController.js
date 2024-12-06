@@ -40,4 +40,28 @@ const loginUser = async (req, res) => {
   res.json({ token });
 };
 
-module.exports = { registerUser, loginUser };
+
+
+// Get all users
+const getAllUsers = async (req, res) => {
+  try {
+
+    const data = await User.find();
+    res.status(200).json({
+      success: true,
+      message: 'Users retrieved successfully',
+      data: data,
+    });
+  } catch (error) {
+
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch users',
+      error: error.message,
+    });
+  }
+};
+
+
+
+module.exports = { registerUser, loginUser,getAllUsers };
