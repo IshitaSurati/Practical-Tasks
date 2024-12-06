@@ -27,9 +27,9 @@ app.get("/", (req, res) => {
   res.send("Welcome to Freelancer Project Management System API");
 });
 
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// const PORT = process.env.PORT || 4000;
+app.listen(4000, () => {
+  console.log("Server running on port 4000");
   
 });
 
