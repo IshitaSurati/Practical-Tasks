@@ -9,7 +9,7 @@ const submissionRoutes = require('./routes/submissionRoutes');
 const connectDB = require('./config/db');
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+
 
 // Middleware
 app.use(cors());
@@ -27,9 +27,9 @@ app.get("/", (req, res) => {
   res.send("Welcome to Freelancer Project Management System API");
 });
 
-
-// app.listen(PORT, () => {
-//   console.log(`Server running on port ${PORT}`);
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
   
-// });
+});
 
