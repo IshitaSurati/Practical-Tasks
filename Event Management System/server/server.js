@@ -5,7 +5,7 @@ const connectDB = require('./config/db');
 const eventRoute = require("./routes/event");
 const path = require('path');
 require('dotenv').config();
-const PORT = process.env.PORT || 8090
+// const PORT = process.env.PORT || 8090
 
 const app = express();
 app.use(express.json())
@@ -19,7 +19,7 @@ app.get("/", (req, res) => {
 app.use("/api",userRoute)
 app.use("/api/events", eventRoute);
 
-app.listen(PORT, () => {
+app.listen(8000, () => {
     console.log("Server Running On Port http://localhost:8000");
     connectDB();
 })

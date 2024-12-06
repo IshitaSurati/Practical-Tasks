@@ -1,6 +1,7 @@
 # Airbnb Clone
 
-backend-url: https://airbnb-clone-4n8e.onrender.com
+### Backend:
+- Deployed on Render: [Backend URL](https://airbnb-clone-4n8e.onrender.com/)
 
 -> This is the backend for an Airbnb Clone built using the MERN stack (MongoDB, Express, React, Node.js). The backend handles user authentication, property listing management, and booking functionality. It provides RESTful APIs for the frontend to interact with.
 
