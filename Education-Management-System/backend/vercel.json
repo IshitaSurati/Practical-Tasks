@@ -1,19 +1,24 @@
 {
   "version": 2,
-  "routes": [
-    {
-      "src": "/api/(.*)", 
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/(.*)", 
-      "dest": "/index.html"
-    }
+  "builds":[
+   {
+       "src":"/backend/server.js",
+       "use":"@vercel/node"
+   }
   ],
-  "rewrites": [
-    {
-      "source": "/api/users",
-      "destination": "/api/users"
-    }
+  "routes":[
+   {
+       "src":"/api/auth/(.*)",
+       "dest":"/backend/server.js"
+   },
+   {
+       "src":"/api/submissions/(.*)",
+       "dest":"/backend/server.js"
+   },
+   {
+    "src":"/api/courses/(.*)",
+    "dest":"/backend/server.js"
+}
   ]
+
 }

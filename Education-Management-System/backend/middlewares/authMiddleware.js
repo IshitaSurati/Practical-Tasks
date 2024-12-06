@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');  // Adjust according to your model
+const User = require('../models/User');  
 
 // Authentication middleware to verify the token
 const authenticate = (req, res, next) => {
