@@ -1,27 +1,26 @@
 const Payment = require('../models/paymentModel');
+const Project = require('../models/projectModel');
 
-// Get all payments
-const getPayments = async (req, res) => {
+// Get All Payments
+exports.getPayments = async (req, res) => {
   try {
-    const payments = await Payment.find().populate('projectId'); // Assuming you want to populate project details
+    const payments = await Payment.find().populate('projectId');
     res.status(200).json(payments);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching payments', error });
   }
 };
 
-// Mark payment as paid
-const markPaymentAsPaid = async (req, res) => {
+// Mark Payment as Paid
+exports.markPaymentAsPaid = async (req, res) => {
   const { id } = req.params;
 
   try {
     const payment = await Payment.findById(id);
-    
     if (!payment) {
       return res.status(404).json({ message: 'Payment not found' });
     }
 
-    // Update payment status to 'paid'
     payment.status = 'paid';
     await payment.save();
 
@@ -31,15 +30,15 @@ const markPaymentAsPaid = async (req, res) => {
   }
 };
 
-// Create a new payment
-const createPayment = async (req, res) => {
+// Create Payment
+exports.createPayment = async (req, res) => {
   const { projectId, amount } = req.body;
 
   try {
     const newPayment = new Payment({
       projectId,
       amount,
-      status: 'pending', // Default status is 'pending'
+      status: 'pending',
     });
 
     await newPayment.save();
@@ -48,5 +47,3 @@ const createPayment = async (req, res) => {
     res.status(500).json({ message: 'Error creating payment', error });
   }
 };
-
-module.exports = { getPayments, markPaymentAsPaid, createPayment };

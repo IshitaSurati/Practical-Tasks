@@ -4,8 +4,8 @@ const ProjectSchema = new mongoose.Schema({
   name: { type: String, required: true },
   dueDate: { type: Date, required: true },
   amount: { type: Number, required: true },
-  status: { type: String, default: 'active' },
-});
+  status: { type: String, default: 'active' }, 
+}, { timestamps: true });
 
 const Project = mongoose.model('Project', ProjectSchema);
 
