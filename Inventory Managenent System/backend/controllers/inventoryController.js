@@ -1,4 +1,6 @@
+// controllers/inventoryController.js
 const Inventory = require("../models/inventory");
+const Supplier = require("../models/supplier");
 
 exports.getAllInventory = async (req, res) => {
   try {
@@ -21,9 +23,7 @@ exports.addInventory = async (req, res) => {
 
 exports.updateInventory = async (req, res) => {
   try {
-    const item = await Inventory.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    const item = await Inventory.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.status(200).json(item);
   } catch (error) {
     res.status(400).json({ error: error.message });

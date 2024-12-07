@@ -1,9 +1,10 @@
+// routes/inventoryRoutes.js
 const express = require("express");
 const {
   getAllInventory,
   addInventory,
   updateInventory,
-  deleteInventory,
+  deleteInventory
 } = require("../controllers/inventoryController");
 
 const router = express.Router();

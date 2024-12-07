@@ -1,3 +1,4 @@
+// controllers/supplierController.js
 const Supplier = require("../models/supplier");
 
 exports.getAllSuppliers = async (req, res) => {
@@ -21,9 +22,7 @@ exports.addSupplier = async (req, res) => {
 
 exports.updateSupplier = async (req, res) => {
   try {
-    const supplier = await Supplier.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    const supplier = await Supplier.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.status(200).json(supplier);
   } catch (error) {
     res.status(400).json({ error: error.message });

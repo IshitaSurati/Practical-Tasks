@@ -1,9 +1,10 @@
+// routes/supplierRoutes.js
 const express = require("express");
 const {
   getAllSuppliers,
   addSupplier,
   updateSupplier,
-  deleteSupplier,
+  deleteSupplier
 } = require("../controllers/supplierController");
 
 const router = express.Router();

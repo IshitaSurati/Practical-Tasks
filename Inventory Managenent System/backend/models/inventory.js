@@ -1,3 +1,4 @@
+// models/inventory.js
 const mongoose = require("mongoose");
 
 const inventorySchema = new mongoose.Schema({
