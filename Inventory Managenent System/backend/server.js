@@ -16,6 +16,9 @@ app.use(bodyParser.json());
 connectDB();
 
 // Routes
+app.get('/',(req,res)=>{
+  res.send("welcome to Inventory Management System api")
+})
 app.use("/api/inventory", inventoryRoutes);
 app.use("/api/suppliers", supplierRoutes);
 app.use("/api", csvRoutes);  // Use CSV routes
