@@ -19,7 +19,7 @@ app.use('/uploads', express.static('uploads'));
 
 // Routes
 app.get('/',(req,res)=>{
-  res.send("Welcome to library management system backend")
+  res.send("Welcome to personal blog management system backend")
 })
 app.use(authRoutes);
 app.use(postRoutes);
