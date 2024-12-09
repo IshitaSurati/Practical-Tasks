@@ -1,7 +1,8 @@
 ﻿# Freelancer-Project-Management
 
- - backend : https://freelancer-project-management-backend.onrender.com
-
+### Backend:
+- Deployed on Render: [Backend URL](https://freelancer-project-management-backend.onrender.com)
+ 
 ## Overview
 This project is a backend API for managing projects, payments, and CSV file import/export functionalities. It is built using **Node.js**, **Express**, and **MongoDB**.
 

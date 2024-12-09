@@ -1,26 +1,36 @@
-const express = require('express')
+const express = require('express');
 const cors = require('cors');
-const path = require('path');
-const multer = require('./config/multer');
-const connectDB = require('./config/db')
+const dotenv = require('dotenv');
+// const connectDB = require('./config/connectDB');
 const authRoutes = require('./routes/authRoutes');
 const bookRoutes = require('./routes/bookRoutes');
-require('dotenv').config()
-const PORT = process.env.PORT || 8000
-const app = express()
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }));
-app.use(cors());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+const connectDB = require('./config/db');
 
-// Example API Route
-app.get('/', (req, res) => {
-    res.send("Welcom To Library Management api....")
-  });
+// Load environment variables
+dotenv.config();
+
+// Connect to the database
+connectDB();
+
+// Initialize Express
+const app = express();
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes);
 
-app.listen(PORT, () => {
-    console.log(`Server Running on ${PORT}`);
-    connectDB();
-})
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.message);
+  res.status(500).json({ error: 'Internal Server Error' });
+});
+
+// Server setup
+// const PORT = process.env.PORT || 5000;
+app.listen(5000, () => {
+  console.log(`Server is running on http://localhost:5000`);
+});
