@@ -1,4 +1,5 @@
 const Quiz = require('../models/Quiz');
+const { validationResult } = require('express-validator');
 
 // Get all quizzes
 exports.getAllQuizzes = async (req, res) => {
@@ -25,7 +26,7 @@ exports.getQuizById = async (req, res) => {
 
 // Submit answers and calculate score
 exports.submitQuiz = async (req, res) => {
-  const { answers } = req.body; // Assume answers is an array of the selected choices for each question
+  const { answers } = req.body; 
 
   try {
     const quiz = await Quiz.findById(req.params.id);
@@ -33,14 +34,23 @@ exports.submitQuiz = async (req, res) => {
       return res.status(404).json({ message: 'Quiz not found' });
     }
 
+    if (!answers || answers.length !== quiz.questions.length) {
+      return res.status(400).json({ message: 'Invalid number of answers submitted' });
+    }
+
     let score = 0;
-    quiz.questions.forEach((question, index) => {
-      if (answers[index] === question.correctAnswer) {
-        score++;
-      }
+    const feedback = quiz.questions.map((question, index) => {
+      const isCorrect = answers[index] === question.correctAnswer;
+      if (isCorrect) score++;
+      return {
+        question: question.questionText,
+        correctAnswer: question.correctAnswer,
+        userAnswer: answers[index],
+        isCorrect,
+      };
     });
 
-    res.status(200).json({ score, totalQuestions: quiz.questions.length });
+    res.status(200).json({ score, totalQuestions: quiz.questions.length, feedback });
   } catch (error) {
     res.status(500).json({ message: 'Failed to submit quiz', error });
   }
@@ -48,14 +58,15 @@ exports.submitQuiz = async (req, res) => {
 
 // Create a new quiz (for testing purposes)
 exports.addQuiz = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   const { title, description, questions } = req.body;
 
   try {
-    const quiz = new Quiz({
-      title,
-      description,
-      questions,
-    });
+    const quiz = new Quiz({ title, description, questions });
     await quiz.save();
     res.status(201).json({ message: 'Quiz created successfully' });
   } catch (error) {
