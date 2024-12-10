@@ -63,7 +63,7 @@ const deleteRecipe = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    await Recipe.deleteOne({ _id: id }); // Fixed deletion
+    await Recipe.deleteOne({ _id: id });
     res.json({ message: "Recipe removed successfully" });
   } catch (err) {
     res.status(500).json({ message: err.message });

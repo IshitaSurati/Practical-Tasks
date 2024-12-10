@@ -4,8 +4,8 @@ const quizController = require('../controllers/quizController');
 
 const router = express.Router();
 
-router.get('/quizzes', quizController.getAllQuizzes);
-router.get('/quizzes/:id', quizController.getQuizById);
+router.get('/', quizController.getAllQuizzes);
+router.get('/:id', quizController.getQuizById);
 router.post('/submit-quiz/:id', quizController.submitQuiz);
 router.post(
   '/add-quiz',

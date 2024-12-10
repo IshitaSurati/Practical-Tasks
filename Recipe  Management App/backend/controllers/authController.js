@@ -35,15 +35,12 @@ const loginUser = async (req, res) => {
       id: user.id,
       name: user.name,
       email: user.email,
-      token: jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-        expiresIn: "30d",
-      }),
+      token: generateToken(user.id),
     });
   } else {
     res.status(401).json({ message: "Invalid credentials" });
   }
 };
-
 
 const getProfile = async (req, res) => {
   const user = await User.findById(req.user.id);
