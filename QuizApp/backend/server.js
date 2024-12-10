@@ -18,6 +18,9 @@ mongoose
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.log('Failed to connect to MongoDB', err));
 
+app.get('/',(req,res)=>{
+  res.send("Welcome to Quiz App backend")
+})
 app.use('/api/quizzes', quizRoutes);
 app.use('/api/users', userRoutes);
 
