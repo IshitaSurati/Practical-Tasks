@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+// Auth Middleware
 const authMiddleware = async (req, res, next) => {
   const token = req.headers['authorization']?.split(' ')[1];
   if (!token) {
@@ -20,6 +21,7 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
+// Protect Middleware
 const protect = async (req, res, next) => {
   let token;
 
@@ -33,7 +35,7 @@ const protect = async (req, res, next) => {
       // Attach user to request
       req.user = decoded;
 
-      // Check if user exists in database (optional, depending on your setup)
+      // Check if user exists in database (optional)
       const user = await User.findById(req.user.id);
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
@@ -49,4 +51,12 @@ const protect = async (req, res, next) => {
   }
 };
 
-module.exports = { authMiddleware, protect };
+// Role Middleware
+const roleMiddleware = (role) => {
+  return (req, res, next) => {
+    if (req.user.role !== role) return res.status(403).send('Forbidden');
+    next();
+  };
+};
+
+module.exports = { authMiddleware, protect, roleMiddleware };

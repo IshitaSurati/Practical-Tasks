@@ -11,13 +11,14 @@ const createTask = async (req, res) => {
     title,
     description,
     dueDate,
-    user: req.user._id // Assuming req.user is populated correctly
+    user: req.user._id 
   });
 
   await task.save();
   res.status(201).send(task);
 };
 
+// Get Tasks
 const getTasks = async (req, res) => {
   const tasks = await Task.find({ user: req.user._id });
   res.json(tasks);

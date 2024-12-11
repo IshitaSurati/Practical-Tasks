@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const taskRoutes = require('./routes/taskRoutes');
+const userRoutes = require('./routes/authRoutes');
 
 dotenv.config();
 connectDB();
@@ -12,8 +13,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/auth', authRoutes);
-app.use('/api', taskRoutes);
+app.get('/', (req, res) => {
+  res.send("Welcome to Task Management backend");
+});
 
-const PORT = process.env.PORT || 6000;
-app.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}`));
+app.use('/api/auth', authRoutes);
+app.use('/api/tasks', taskRoutes);
+app.use('/api/user', userRoutes);
+
+// const PORT = process.env.PORT || 6000;
+app.listen(6000, () => console.log(`Server running on port http://localhost:6000`));

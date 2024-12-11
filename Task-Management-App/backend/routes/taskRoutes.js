@@ -4,7 +4,7 @@ const { authMiddleware, protect } = require('../middleware/authMiddleware');
 const roleMiddleware = require('../middleware/roleMiddleware');
 const router = express.Router();
 
-router.post('/tasks', authMiddleware, roleMiddleware('admin'), createTask);
-router.get('/tasks', protect, getTasks);  
+router.post('/', authMiddleware, roleMiddleware('admin'), createTask);
+router.get('/', protect, getTasks); 
 
 module.exports = router;
