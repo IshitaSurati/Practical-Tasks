@@ -1,7 +1,7 @@
-const { User } =require ("../models/user.model.js");
-const { fetchFromTMDB } =require ("../services/tmdb.service.js");
+import { User } from "../models/user.model.js";
+import { fetchFromTMDB } from "../services/tmdb.service.js";
 
-const searchPerson=async(req, res)=> {
+export async function searchPerson(req, res) {
 	const { query } = req.params;
 	try {
 		const response = await fetchFromTMDB(
@@ -31,7 +31,7 @@ const searchPerson=async(req, res)=> {
 	}
 }
 
-const searchMovie=async(req, res)=> {
+export async function searchMovie(req, res) {
 	const { query } = req.params;
 
 	try {
@@ -61,7 +61,7 @@ const searchMovie=async(req, res)=> {
 	}
 }
 
-const searchTv=async(req, res)=> {
+export async function searchTv(req, res) {
 	const { query } = req.params;
 
 	try {
@@ -91,7 +91,7 @@ const searchTv=async(req, res)=> {
 	}
 }
 
-const getSearchHistory=async(req, res) =>{
+export async function getSearchHistory(req, res) {
 	try {
 		res.status(200).json({ success: true, content: req.user.searchHistory });
 	} catch (error) {
@@ -99,7 +99,7 @@ const getSearchHistory=async(req, res) =>{
 	}
 }
 
-const removeItemFromSearchHistory=async(req, res)=> {
+export async function removeItemFromSearchHistory(req, res) {
 	let { id } = req.params;
 
 	id = parseInt(id);
@@ -117,6 +117,3 @@ const removeItemFromSearchHistory=async(req, res)=> {
 		res.status(500).json({ success: false, message: "Internal Server Error" });
 	}
 }
-
-
-module.exports={removeItemFromSearchHistory,getSearchHistory,searchTv,searchMovie,searchPerson}

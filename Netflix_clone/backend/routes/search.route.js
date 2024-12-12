@@ -1,20 +1,20 @@
-const express = require('express');
-const {
-    getSearchHistory,
-    removeItemFromSearchHistory,
-    searchMovie,
-    searchPerson,
-    searchTv,
-} = require("../controllers/search.controller.js");
+import express from "express";
+import {
+	getSearchHistory,
+	removeItemFromSearchHistory,
+	searchMovie,
+	searchPerson,
+	searchTv,
+} from "../controllers/search.controller.js";
 
-const Search_router = express.Router();
+const router = express.Router();
 
-Search_router.get("/person/:query", searchPerson);
-Search_router.get("/movie/:query", searchMovie);
-Search_router.get("/tv/:query", searchTv);
+router.get("/person/:query", searchPerson);
+router.get("/movie/:query", searchMovie);
+router.get("/tv/:query", searchTv);
 
-Search_router.get("/history", getSearchHistory);
+router.get("/history", getSearchHistory);
 
-Search_router.delete("/history/:id", removeItemFromSearchHistory);
+router.delete("/history/:id", removeItemFromSearchHistory);
 
-module.exports = Search_router
+export default router;

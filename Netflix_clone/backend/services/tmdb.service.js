@@ -1,34 +1,19 @@
-const axios = require('axios');
-require('dotenv').config();
+import axios from "axios";
+import { ENV_VARS } from "../config/envVars.js";
 
-const MOVIE_API_KEY = process.env.MOVIE_API_KEY;
+export const fetchFromTMDB = async (url) => {
+	const options = {
+		headers: {
+			accept: "application/json",
+			Authorization: "Bearer " + ENV_VARS.TMDB_API_KEY,
+		},
+	};
 
-if (!MOVIE_API_KEY) {
-  console.warn("Warning: MOVIE_API_KEY is not defined in the .env file.");
-}
+	const response = await axios.get(url, options);
 
-const fetchFromTMDB = async (url) => {
-  try {
-    const options = {
-      headers: {
-        accept: "application/json",
-        Authorization: `Bearer ${MOVIE_API_KEY}`,
-      },
-    };
+	if (response.status !== 200) {
+		throw new Error("Failed to fetch data from TMDB" + response.statusText);
+	}
 
-    const response = await axios.get(url, options);
-
-    if (response.status !== 200) {
-      throw new Error(`Failed to fetch data from TMDB. Status: ${response.status} - ${response.statusText}`);
-    }
-
-    return response.data;
-  } catch (error) {
-    console.error(
-      `Error fetching data from TMDB: ${error.response?.status} - ${error.response?.statusText || error.message}`
-    );
-    throw error;
-  }
+	return response.data;
 };
-
-module.exports = fetchFromTMDB;

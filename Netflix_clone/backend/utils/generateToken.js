@@ -1,20 +1,15 @@
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+import jwt from "jsonwebtoken";
+import { ENV_VARS } from "../config/envVars.js";
 
-const JWT_SECRET = process.env.JWT_SECRET;
-const NODE_ENV = process.env.NODE_ENV || 'development';
+export const generateTokenAndSetCookie = (userId, res) => {
+	const token = jwt.sign({ userId }, ENV_VARS.JWT_SECRET, { expiresIn: "15d" });
 
- const generateTokenAndSetCookie = (userId, res) => {
-    const token = jwt.sign({ userId }, JWT_SECRET, { expiresIn: '15d' });
+	res.cookie("jwt-netflix", token, {
+		maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days in MS
+		httpOnly: true, // prevent XSS attacks cross-site scripting attacks, make it not be accessed by JS
+		sameSite: "strict", // CSRF attacks cross-site request forgery attacks
+		secure: ENV_VARS.NODE_ENV !== "development",
+	});
 
-    res.cookie('jwt-netflix', token, {
-        maxAge: 15 * 24 * 60 * 60 * 1000, 
-        httpOnly: true, 
-        sameSite: 'strict',
-        secure: NODE_ENV !== 'development', 
-    });
-
-    return token;
+	return token;
 };
-
-module.exports=generateTokenAndSetCookie;
