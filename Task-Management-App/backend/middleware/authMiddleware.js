@@ -1,62 +1,19 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
 
-// Auth Middleware
-const authMiddleware = async (req, res, next) => {
-  const token = req.headers['authorization']?.split(' ')[1];
+const authMiddleware = (req, res, next) => {
+  const token = req.header('Authorization');
+
   if (!token) {
-    return res.status(401).send('No token provided, authorization denied');
+    return res.status(401).json({ message: 'No token, authorization denied' });
   }
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = await User.findById(decoded.userId);
-    if (!req.user) {
-      return res.status(404).send('User not found');
-    }
+    req.user = decoded;
     next();
   } catch (error) {
-    console.error(error);
-    res.status(401).send('Token is invalid or expired');
+    res.status(401).json({ message: 'Token is not valid' });
   }
 };
 
-// Protect Middleware
-const protect = async (req, res, next) => {
-  let token;
-
-  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-    try {
-      token = req.headers.authorization.split(' ')[1];
-
-      // Decode token
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      // Attach user to request
-      req.user = decoded;
-
-      // Check if user exists in database (optional)
-      const user = await User.findById(req.user.id);
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-
-      next();
-    } catch (error) {
-      console.error(error);
-      res.status(401).json({ message: 'Unauthorized, token verification failed or expired' });
-    }
-  } else {
-    res.status(401).json({ message: 'Unauthorized, no token provided' });
-  }
-};
-
-// Role Middleware
-const roleMiddleware = (role) => {
-  return (req, res, next) => {
-    if (req.user.role !== role) return res.status(403).send('Forbidden');
-    next();
-  };
-};
-
-module.exports = { authMiddleware, protect, roleMiddleware };
+module.exports = { authMiddleware };
