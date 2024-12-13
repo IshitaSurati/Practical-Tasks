@@ -1,7 +1,7 @@
 # Netflix-Clone-MERN
 
 ### Backend:
-- Deployed on Render: [Backend URL](https://netflix-clone-backend.onrender.com)
+- Deployed on Render: [Backend URL](https://netflix-clone-m8eq.onrender.com)
 
 This is the backend API for a Netflix clone built using the MERN (MongoDB, Express, React, Node.js) stack. It handles user authentication, video content management, and the core features of a streaming platform.
 
