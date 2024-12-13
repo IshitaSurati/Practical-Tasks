@@ -1,71 +1,143 @@
-<h1 align="center">MERN Netflix Clone 🎬</h1>
+# Netflix-Clone-MERN
 
-![Demo App](/frontend/public/screenshot-for-readme.png)
+### Backend:
+- Deployed on Render: [Backend URL](https://netflix-clone-backend.onrender.com)
 
-[Video Tutorial on Youtube](https://youtu.be/0Kzd4k1YuCA)
+This is the backend API for a Netflix clone built using the MERN (MongoDB, Express, React, Node.js) stack. It handles user authentication, video content management, and the core features of a streaming platform.
 
-About This Course:
+---
 
--   ⚛️ Tech Stack: React.js, Node.js, Express.js, MongoDB, Tailwind
--   🔐 Authentication with JWT
--   📱 Responsive UI
--   🎬 Fetch Movies and Tv Show
--   🔎 Search for Actors and Movies
--   🎥 Watch Trailers
--   🔥 Fetch Search History
--   🐱‍👤 Get Similar Movies/Tv Shows
--   💙 Awesome Landing Page
--   🌐 Deployment
--   🚀 And Many More Cool Features
--   ✅ This is a lot of work. Support my work by subscribing to the [Channel](https://www.youtube.com/@asaprogrammer_)
+## Features
 
-### Setup .env file
+- **User Authentication:**
+  - Register a new user with email and password.
+  - Login and obtain a JWT token for authentication.
+  - Protected routes using JWT for secure access.
+
+- **Video Management:**
+  - CRUD operations for videos (Create, Read, Update, Delete).
+  - Add video titles with descriptions, categories, and image URLs.
+  - Fetch video details for playback.
+
+- **User Management:**
+  - Admin can fetch all users, update user information, and delete users.
+  - Fetch a single user’s data or update it.
+
+- **Error Handling:**
+  - Centralized error handling for better debugging.
+
+---
+
+## Technologies Used
+
+- **Node.js**: Runtime environment.
+- **Express.js**: Web framework.
+- **MongoDB**: Database.
+- **Mongoose**: MongoDB Object Data Modeling (ODM).
+- **JWT**: JSON Web Tokens for authentication.
+- **dotenv**: Environment variable management.
+- **cors**: Enable Cross-Origin Resource Sharing.
+- **Bcrypt.js**: Password hashing.
+
+---
+# API Endpoints
+
+## Auth Routes
+
+| Method | Endpoint             | Description            |
+|--------|----------------------|------------------------|
+| POST   | /api/auth/register    | Register a new user    |
+| POST   | /api/auth/login       | Login a user           |
+
+## User Routes
+
+| Method | Endpoint             | Description                     |
+|--------|----------------------|---------------------------------|
+| GET    | /api/users           | Get all users (Admin only)      |
+| GET    | /api/users/:id       | Get a single user by ID         |
+| PUT    | /api/users/:id       | Update user details by ID      |
+| DELETE | /api/users/:id       | Delete a user by ID            |
+
+## Video Routes
+
+| Method | Endpoint             | Description                         |
+|--------|----------------------|-------------------------------------|
+| GET    | /api/videos          | Get all videos                      |
+| GET    | /api/videos/:id      | Get a single video by ID           |
+| POST   | /api/videos          | Add a new video                    |
+| PUT    | /api/videos/:id      | Update video details by ID         |
+| DELETE | /api/videos/:id      | Delete a video by ID               |
+
+---
+
+## Usage
+
+### Register a User
+
+Use the following `curl` command to register a new user:
 
 ```bash
-PORT=5000
-MONGO_URI=your_mongo_uri
-NODE_ENV=development
-JWT_SECRET=your_jwt_secre
-TMDB_API_KEY=your_tmdb_api_key
-```
+POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+### Get All Videos
 
-### Run this app locally
+Use the following `curl` command to fetch all videos (requires a valid JWT token):
 
-```shell
-npm run build
-```
+```bash
+GET http://localhost:5000/api/videos
+Authorization: Bearer <your_jwt_token>
+Get a Single Video by ID
+Use the following curl command to get a single video by ID (requires a valid JWT token):
 
-### Start the app
+```bash
+GET http://localhost:5000/api/videos/:id
+Authorization: Bearer <your_jwt_token>
+Add a New Video
+Use the following curl command to add a new video:
 
-```shell
-npm run start
-```
+```bash
+POST http://localhost:5000/api/videos
+Content-Type: application/json
+Authorization: Bearer <your_jwt_token>
+{
+  "title": "The Matrix",
+  "description": "A hacker learns the truth about reality.",
+  "category": "Sci-Fi",
+  "imageUrl": "https://example.com/image.jpg"
+}
+Update Video Details by ID
+Use the following curl command to update video details by ID:
 
-## `Timestamps` for your convenience:
+```bash
+PUT http://localhost:5000/api/videos/:id
+Content-Type: application/json
+Authorization: Bearer <your_jwt_token>
+{
+  "title": "The Matrix - Reloaded",
+  "description": "The sequel to The Matrix.",
+  "category": "Sci-Fi",
+  "imageUrl": "https://example.com/updated-image.jpg"
+}
 
--   00:00:00 - App Showcase
--   00:07:50 - Backend Setup
--   00:23:00 - Database (MongoDB) Setup
--   00:35:54 - Signup Logic in Backend
--   00:54:26 - Generate JWT
--   01:02:40 - Logout Logic in Backend
--   01:04:30 - Login Logic in Backend
--   01:08:30 - A Quick Recap
--   01:11:25 - Fetching Movies From API
--   01:42:00 - Fetchin TV Shows From API
--   01:48:50 - Protecting Routes (Middleware)
--   01:59:15 - Search Routes
--   02:28:52 - Frontend Setup
--   02:41:45 - Signup Page and Login Page UI Design
--   02:55:25 - Auth Screen UI Design
--   03:28:30 - Signup, Login, Logout Functionality
--   04:03:45 - Building the Home Screen
--   05:13:00 - Building the Watch Page
--   05:49:50 - Building the Search Page
--   06:05:20 - Building the Search History Page
--   06:14:55 - Building a Custom 404 Page
--   06:18:55 - Testing Our App and Small Fixes
--   06:24:40 - Detailed Deployment Guide
--   06:48:53 - Oops! I almost forgot this... bye
+### Delete a Video by ID
+Use the following curl command to delete a video by ID:
 
-### I'll see you in the next one! 🚀
+```bash
+DELETE http://localhost:5000/api/videos/:id
+Authorization: Bearer <your_jwt_token>
+Get All Users (Admin only)
+Use the following curl command to fetch all users (Admin only):
+
+```bash
+GET http://localhost:5000/api/users
+Authorization: Bearer <your_jwt_token>
+Get a Single User by ID
+Use the following curl command to get a single user by ID:
+
+```bash
+GET http://localhost:5000/api/users/:id
+Authorization: Bearer <your_jwt_token>
