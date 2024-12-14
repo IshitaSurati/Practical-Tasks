@@ -8,7 +8,7 @@ const {
 const verifyToken = require("../middleware/authMiddleware");
 const isAdmin = require("../middleware/adminMiddleware");
 
-// router.get("/", verifyToken, isAdmin, getAllUsers);
+router.get("/", verifyToken, isAdmin, getAllUsers);
 router.get("/:id", verifyToken, getUserById);
 router.put("/:id", verifyToken, updateUser);
 router.delete("/:id", verifyToken, deleteUser);

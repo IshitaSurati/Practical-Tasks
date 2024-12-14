@@ -1,54 +1,48 @@
 const Video = require("../models/Video");
+const path = require("path");
+const fs = require("fs");
 
-// Add a new video
-exports.addVideo = async (req, res) => {
+exports.uploadVideo = async (req, res) => {
   try {
-    const video = await Video.create(req.body);
-    res.status(201).json(video);
+    const { title, description, genre } = req.body;
+
+    if (!req.file) {
+      return res.status(400).json({ message: "No video file uploaded" });
+    }
+
+    const video = new Video({
+      title,
+      description,
+      genre,
+      videoUrl: `/uploads/${req.file.filename}`,
+      uploadDate: new Date(),
+    });
+
+    await video.save();
+
+    res.status(201).json({ message: "Video uploaded successfully", video });
   } catch (err) {
-    res.status(500).json({ message: "Failed to add video", error: err.message });
+    res.status(500).json({ message: "Error uploading video", error: err.message });
   }
 };
 
-// Get all videos
 exports.getVideos = async (req, res) => {
   try {
     const videos = await Video.find();
     res.status(200).json(videos);
   } catch (err) {
-    res.status(500).json({ message: "Failed to fetch videos", error: err.message });
+    res.status(500).json({ message: "Error fetching videos", error: err.message });
   }
 };
 
-// Get a single video by ID
 exports.getVideoById = async (req, res) => {
   try {
     const video = await Video.findById(req.params.id);
-    if (!video) return res.status(404).json({ message: "Video not found" });
+    if (!video) {
+      return res.status(404).json({ message: "Video not found" });
+    }
     res.status(200).json(video);
   } catch (err) {
-    res.status(500).json({ message: "Failed to fetch video", error: err.message });
-  }
-};
-
-// Update a video by ID
-exports.updateVideo = async (req, res) => {
-  try {
-    const video = await Video.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!video) return res.status(404).json({ message: "Video not found" });
-    res.status(200).json(video);
-  } catch (err) {
-    res.status(500).json({ message: "Failed to update video", error: err.message });
-  }
-};
-
-// Delete a video by ID
-exports.deleteVideo = async (req, res) => {
-  try {
-    const video = await Video.findByIdAndDelete(req.params.id);
-    if (!video) return res.status(404).json({ message: "Video not found" });
-    res.status(200).json({ message: "Video deleted successfully" });
-  } catch (err) {
-    res.status(500).json({ message: "Failed to delete video", error: err.message });
+    res.status(500).json({ message: "Error fetching video", error: err.message });
   }
 };

@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 
-const SubscriptionSchema = new mongoose.Schema({
-  type: { type: String, enum: ["Basic", "Standard", "Premium"], required: true },
-  price: { type: Number, required: true },
-  validUntil: { type: Date, required: true },
+const subscriptionSchema = new mongoose.Schema({
+  plan: { type: String, required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  startDate: { type: Date, default: Date.now },
+  endDate: { type: Date },
 });
 
-module.exports = mongoose.model("Subscription", SubscriptionSchema);
+module.exports = mongoose.model("Subscription", subscriptionSchema);
