@@ -75,7 +75,6 @@ This is the backend API for an Education Management System that manages users, c
 ```
 ### Example Response for /api/auth/login (POST):
 ```json
-Copy code
 {
   "message": "Login successful",
   "token": "<your_jwt_token>"
