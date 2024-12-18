@@ -221,5 +221,20 @@ This repository provides the backend implementation for a task management system
 
 1. Clone this repository:
    ```bash
+   2. Install dependencies:
+```bash
+npm install
+```
+3. Create a .env file in the root directory and add the following variables:
+```env
+PORT=5000
+MONGO_URI=<your_mongodb_connection_string>
+JWT_SECRET=<your_secret_key>
+```
+4.Start the server:
+```bash
+npm start
+```
+5. The server will run on http://localhost:7000.
    git clone https://github.com/your-username/task-management-app.git
    cd task-management-app
