@@ -5,7 +5,7 @@ const Inventory = require("../models/inventory");
 exports.exportInventoryCSV = async (req, res) => {
   try {
     const items = await Inventory.find().populate("supplier");
-    const filePath = './inventory.csv';
+    const filePath = '../csvService.js';
     exportCSV(items, filePath); 
     res.download(filePath);  
   } catch (error) {
