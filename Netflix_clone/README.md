@@ -76,7 +76,6 @@ This is the backend API for a Netflix clone built using the MERN (MongoDB, Expre
 
 Use the following `curl` command to register a new user:
 
-```bash
 POST http://localhost:5000/api/auth/register
 Content-Type: application/json
 {
@@ -87,20 +86,22 @@ Content-Type: application/json
 
 Use the following `curl` command to fetch all videos (requires a valid JWT token):
 
-```bash
 GET http://localhost:5000/api/videos
+```bash
 Authorization: Bearer <your_jwt_token>
+```
 Get a Single Video by ID
 Use the following curl command to get a single video by ID (requires a valid JWT token):
 
-```bash
 GET http://localhost:5000/api/videos/:id
+```bash
 Authorization: Bearer <your_jwt_token>
+```
 Add a New Video
 Use the following curl command to add a new video:
 
-```bash
 POST http://localhost:5000/api/videos
+```bash
 Content-Type: application/json
 Authorization: Bearer <your_jwt_token>
 {
@@ -109,11 +110,12 @@ Authorization: Bearer <your_jwt_token>
   "category": "Sci-Fi",
   "imageUrl": "https://example.com/image.jpg"
 }
+```
 Update Video Details by ID
 Use the following curl command to update video details by ID:
 
-```bash
 PUT http://localhost:5000/api/videos/:id
+```bash
 Content-Type: application/json
 Authorization: Bearer <your_jwt_token>
 {
@@ -122,22 +124,25 @@ Authorization: Bearer <your_jwt_token>
   "category": "Sci-Fi",
   "imageUrl": "https://example.com/updated-image.jpg"
 }
-
+```
 ### Delete a Video by ID
 Use the following curl command to delete a video by ID:
 
-```bash
 DELETE http://localhost:5000/api/videos/:id
+```bash
 Authorization: Bearer <your_jwt_token>
+```
 Get All Users (Admin only)
 Use the following curl command to fetch all users (Admin only):
 
-```bash
 GET http://localhost:5000/api/users
+```bash
 Authorization: Bearer <your_jwt_token>
+```
 Get a Single User by ID
 Use the following curl command to get a single user by ID:
 
-```bash
 GET http://localhost:5000/api/users/:id
+```bash
 Authorization: Bearer <your_jwt_token>
+```
