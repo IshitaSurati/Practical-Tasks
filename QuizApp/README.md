@@ -1,4 +1,4 @@
-### Quiz Application Backend
+# Quiz Application Backend
 
 ### Backend:
 - Deployed on Render: [Backend URL](https://quiz-app-backend-cqnm.onrender.com)
@@ -25,27 +25,200 @@ This repository provides the backend implementation for a quiz management system
 
 ## API Endpoints
 
-### Authentication
+### Authentication Routes
 
-| Method | Endpoint        | Description               |
-|--------|-----------------|---------------------------|
-| POST   | `/api/users/signup` | Register a new user       |
-| POST   | `/api/users/login`    | Login a user and get token |
-| GET    | `/api/users/profile`  | Get logged-in user's profile |
+#### 1. **Register a new user**
+- **Method**: `POST`
+- **Endpoint**: `/api/users/signup`
+- **Request Body**:
+    ```json
+    {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "password": "password123"
+    }
+    ```
+- **Response Body**:
+    ```json
+    {
+      "message": "User registered successfully",
+      "user": {
+        "id": "12345",
+        "name": "John Doe",
+        "email": "john@example.com"
+      }
+    }
+    ```
 
-### Quiz Management
+#### 2. **Login a user**
+- **Method**: `POST`
+- **Endpoint**: `/api/users/login`
+- **Request Body**:
+    ```json
+    {
+      "email": "john@example.com",
+      "password": "password123"
+    }
+    ```
+- **Response Body**:
+    ```json
+    {
+      "token": "jwt_token_here"
+    }
+    ```
 
-| Method | Endpoint                 | Description                             |
-|--------|--------------------------|-----------------------------------------|
-| GET    | `/api/quizzes`            | Get all quizzes                        |
-| GET    | `/api/quizzes/:id`        | Get a specific quiz by ID              |
-| POST   | `/api/quizzes/add-quiz`   | Add a new quiz                         |
-| POST   | `/api/quizzes/submit-quiz/:id` | Submit answers for a quiz and get feedback |
+#### 3. **Get user profile**
+- **Method**: `GET`
+- **Endpoint**: `/api/users/profile`
+- **Authorization**: `Bearer <JWT_Token>`
+- **Request Body**: None
+- **Response Body**:
+    ```json
+    {
+      "id": "12345",
+      "name": "John Doe",
+      "email": "john@example.com"
+    }
+    ```
+
+---
+
+### Quiz Management Routes
+
+#### 1. **Get all quizzes**
+- **Method**: `GET`
+- **Endpoint**: `/api/quizzes`
+- **Request Body**: None
+- **Response Body**:
+    ```json
+    [
+      {
+        "id": "quiz1",
+        "title": "Sample Quiz",
+        "description": "This is a sample quiz description.",
+        "questions": [
+          {
+            "questionText": "What is the capital of France?",
+            "choices": ["Paris", "London", "Berlin", "Madrid"],
+            "correctAnswer": "Paris"
+          },
+          {
+            "questionText": "What is 2 + 2?",
+            "choices": ["3", "4", "5", "6"],
+            "correctAnswer": "4"
+          }
+        ]
+      }
+    ]
+    ```
+
+#### 2. **Get a specific quiz by ID**
+- **Method**: `GET`
+- **Endpoint**: `/api/quizzes/:id`
+- **Request Body**: None
+- **Response Body**:
+    ```json
+    {
+      "id": "quiz1",
+      "title": "Sample Quiz",
+      "description": "This is a sample quiz description.",
+      "questions": [
+        {
+          "questionText": "What is the capital of France?",
+          "choices": ["Paris", "London", "Berlin", "Madrid"],
+          "correctAnswer": "Paris"
+        },
+        {
+          "questionText": "What is 2 + 2?",
+          "choices": ["3", "4", "5", "6"],
+          "correctAnswer": "4"
+        }
+      ]
+    }
+    ```
+
+#### 3. **Add a new quiz**
+- **Method**: `POST`
+- **Endpoint**: `/api/quizzes/add-quiz`
+- **Authorization**: `Bearer <JWT_Token>`
+- **Request Body**:
+    ```json
+    {
+      "title": "Sample Quiz",
+      "description": "This is a sample quiz description.",
+      "questions": [
+        {
+          "questionText": "What is the capital of France?",
+          "choices": ["Paris", "London", "Berlin", "Madrid"],
+          "correctAnswer": "Paris"
+        },
+        {
+          "questionText": "What is 2 + 2?",
+          "choices": ["3", "4", "5", "6"],
+          "correctAnswer": "4"
+        }
+      ]
+    }
+    ```
+- **Response Body**:
+    ```json
+    {
+      "message": "Quiz created successfully",
+      "quiz": {
+        "id": "quiz1",
+        "title": "Sample Quiz",
+        "description": "This is a sample quiz description.",
+        "questions": [
+          {
+            "questionText": "What is the capital of France?",
+            "choices": ["Paris", "London", "Berlin", "Madrid"],
+            "correctAnswer": "Paris"
+          },
+          {
+            "questionText": "What is 2 + 2?",
+            "choices": ["3", "4", "5", "6"],
+            "correctAnswer": "4"
+          }
+        ]
+      }
+    }
+    ```
+
+#### 4. **Submit answers for a quiz and get feedback**
+- **Method**: `POST`
+- **Endpoint**: `/api/quizzes/submit-quiz/:id`
+- **Authorization**: `Bearer <JWT_Token>`
+- **Request Body**:
+    ```json
+    {
+      "answers": [
+        {
+          "questionId": "q1",
+          "answer": "Paris"
+        },
+        {
+          "questionId": "q2",
+          "answer": "4"
+        }
+      ]
+    }
+    ```
+- **Response Body**:
+    ```json
+    {
+      "message": "Quiz submitted successfully",
+      "score": 2,
+      "totalQuestions": 2,
+      "feedback": "Great job! You got all answers correct."
+    }
+    ```
+
 ---
 
 ## Middleware
 
 - **authMiddleware**: Verifies JWT tokens to ensure the user is authenticated before accessing protected routes.
+    - **Purpose**: Used in all routes where user authentication is required (e.g., adding quizzes, submitting answers).
 
 ---
 
