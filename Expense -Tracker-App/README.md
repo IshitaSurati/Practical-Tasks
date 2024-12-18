@@ -1,101 +1,132 @@
-expense_tracker_application:
-  backend:
-    deployed_on: "https://expense-tracker-application-b32j.onrender.com/"
-    description: |
-      This is a RESTful API for managing expenses with user authentication,
-      allowing users to add, update, delete, and retrieve their expenses.
-  
-  features:
-    - user_authentication:
-        - user_registration_and_login: true
-        - jwt_based_authentication: true
-    - expense_management:
-        - add_new_expenses: true
-        - view_all_expenses_for_user: true
-        - update_existing_expenses: true
-        - delete_expenses: true
-    - role_based_functionality:
-        - separate_roles_for_users_and_admins: true
+# Expense-Tracker-Application
 
-  technologies_used:
-    backend:
-      - nodejs
-      - expressjs
-    database:
-      - mongodb
-    authentication:
-      - json_web_token (jwt)
-    environment_management:
-      - dotenv
+### Backend:
+- Deployed on Render: [Backend URL](https://expense-tracker-application-b32j.onrender.com/)
 
-  api_endpoints:
-    user_endpoints:
-      - method: POST
-        endpoint: "/api/users/register"
-        description: "Register a new user"
-        example_response:
-          message: "User registered successfully"
-          user:
-            id: "60f5e0f8f0b3e6f7244e57d1"
-            name: "John Doe"
-            email: "johndoe@example.com"
-      - method: POST
-        endpoint: "/api/users/login"
-        description: "Login a user and get a token"
-        example_response:
-          message: "Login successful"
-          token: "<your_jwt_token>"
-      - method: GET
-        endpoint: "/api/users"
-        description: "Fetch all users (admin only)"
-    
-    expense_endpoints:
-      - method: GET
-        endpoint: "/api/expenses"
-        description: "Get all expenses for a user"
-        example_response:
-          - id: "60f5e0f8f0b3e6f7244e57d2"
-            amount: 50
-            description: "Lunch"
-            date: "2024-12-10"
-          - id: "60f5e0f8f0b3e6f7244e57d3"
-            amount: 100
-            description: "Grocery Shopping"
-            date: "2024-12-11"
-      - method: POST
-        endpoint: "/api/expenses"
-        description: "Add a new expense"
-        example_response:
-          message: "Expense added successfully"
-          expense:
-            id: "60f5e0f8f0b3e6f7244e57d4"
-            amount: 75
-            description: "Gas"
-            date: "2024-12-12"
-      - method: PUT
-        endpoint: "/api/expenses/:id"
-        description: "Update an expense"
-        example_response:
-          message: "Expense updated successfully"
-          expense:
-            id: "60f5e0f8f0b3e6f7244e57d4"
-            amount: 80
-            description: "Gas - Updated"
-            date: "2024-12-12"
-      - method: DELETE
-        endpoint: "/api/expenses/:id"
-        description: "Delete an expense"
-        example_response:
-          message: "Expense deleted successfully"
+This is a RESTful API for managing expenses with user authentication, allowing users to add, update, delete, and retrieve their expenses.
 
-  dependencies:
-    - express
-    - mongoose
-    - jsonwebtoken
-    - bcrypt
-    - dotenv
+---
 
-  future_enhancements:
-    - add_admin_functionality_for_user_and_expense_management: true
-    - implement_advanced_filtering_and_sorting_for_expenses: true
-    - integrate_with_frontend_for_seamless_user_interaction: true
+## Features
+
+1. **User Authentication:**
+   - User registration and login.
+   - JWT-based authentication for secure access.
+   
+2. **Expense Management:**
+   - Add new expenses.
+   - View all expenses for a user.
+   - Update existing expenses.
+   - Delete expenses.
+
+3. **Role-Based Functionality:**
+   - Separate roles for regular users and admins (if needed for expansion).
+
+---
+
+## Technologies Used
+
+- **Backend:** Node.js, Express.js
+- **Database:** MongoDB (via Mongoose)
+- **Authentication:** JSON Web Token (JWT)
+- **Environment Management:** dotenv
+
+---
+
+# API Endpoints
+
+## User Endpoints and Expense Endpoints:
+
+| **Method** | **Endpoint**          | **Description**                          |
+|------------|-----------------------|------------------------------------------|
+| POST       | `/api/users/register` | Register a new user                      |
+| POST       | `/api/users/login`    | Login a user and get a token             |
+| GET        | `/api/users`          | Fetch all users (admin only)             |
+| GET        | `/api/expenses`       | Get all expenses for a user              |
+| POST       | `/api/expenses`       | Add a new expense                        |
+| PUT        | `/api/expenses/:id`   | Update an expense                        |
+| DELETE     | `/api/expenses/:id`   | Delete an expense                        |
+
+---
+
+## Example Responses
+
+### Example Response for **/api/users/register** (POST):
+```json
+{
+  "message": "User registered successfully",
+  "user": {
+    "id": "60f5e0f8f0b3e6f7244e57d1",
+    "name": "John Doe",
+    "email": "johndoe@example.com"
+  }
+}
+```
+### Example Response for /api/users/login (POST):
+```json
+{
+  "message": "Login successful",
+  "token": "<your_jwt_token>"
+}
+```
+
+### Example Response for /api/expenses (GET):
+```json
+[
+  {
+    "id": "60f5e0f8f0b3e6f7244e57d2",
+    "amount": 50,
+    "description": "Lunch",
+    "date": "2024-12-10"
+  },
+  {
+    "id": "60f5e0f8f0b3e6f7244e57d3",
+    "amount": 100,
+    "description": "Grocery Shopping",
+    "date": "2024-12-11"
+  }
+]
+```
+
+### Example Response for /api/expenses (POST):
+```json
+{
+  "message": "Expense added successfully",
+  "expense": {
+    "id": "60f5e0f8f0b3e6f7244e57d4",
+    "amount": 75,
+    "description": "Gas",
+    "date": "2024-12-12"
+  }
+}
+```
+### Example Response for /api/expenses/:id (PUT):
+``` json
+{
+  "message": "Expense updated successfully",
+  "expense": {
+    "id": "60f5e0f8f0b3e6f7244e57d4",
+    "amount": 80,
+    "description": "Gas - Updated",
+    "date": "2024-12-12"
+  }
+}
+```
+### Example Response for /api/expenses/:id (DELETE):
+```json
+{
+  "message": "Expense deleted successfully"
+}
+```
+# Dependencies
+- express: Web framework for Node.js.
+- mongoose: MongoDB object modeling tool.
+- jsonwebtoken: For creating and verifying JSON Web Tokens.
+- bcrypt: Password hashing library.
+- dotenv: Environment variable management.
+
+# Future Enhancements
+- Add admin functionality for user and expense management.
+- Implement advanced filtering and sorting for expenses.
+- Integration with a frontend for seamless user interaction.
+
