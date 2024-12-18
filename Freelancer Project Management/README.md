@@ -1,8 +1,8 @@
-﻿# Freelancer-Project-Management
+# Freelancer-Project-Management
 
 ### Backend:
 - Deployed on Render: [Backend URL](https://freelancer-project-management-backend.onrender.com)
- 
+
 ## Overview
 This project is a backend API for managing projects, payments, and CSV file import/export functionalities. It is built using **Node.js**, **Express**, and **MongoDB**.
 
@@ -38,7 +38,7 @@ This project is a backend API for managing projects, payments, and CSV file impo
   - [Authentication](#authentication)
 - [Run Locally](#run-locally)
 - [CSV Functionality](#csv-functionality)
-- [Contact](#contact)
+
 
 ---
 
@@ -81,53 +81,241 @@ The following environment variables are required:
 | `JWT_SECRET`  | Secret key for JWT authentication  |
 | `PORT`        | Port number for the server         |
 
-
 ### Example `.env` file:
 ```env
 MONGODB_URI=mongodb+srv://<your_username>:<your_password>@cluster.mongodb.net/<db_name>?retryWrites=true&w=majority
 JWT_SECRET=your_jwt_secret
 PORT=5000
+```
+## API Endpoints
 
-# API Endpoints
+### Project Management
 
-## Project Management
+#### 1. **Create a new project**
+- **Method**: `POST`
+- **Endpoint**: `/api/projects`
+- **Request Body**:
+    ```json
+    {
+      "name": "Project Name",
+      "status": "active"
+    }
+    ```
+- **Response Body**:
+    ```json
+    {
+      "id": "12345",
+      "name": "Project Name",
+      "status": "active"
+    }
+    ```
 
-| Method | Endpoint            | Description                | Request Body                                              |
-|--------|---------------------|----------------------------|-----------------------------------------------------------|
-| POST   | `/api/projects`      | Create a new project       | `{ "name": "Project Name", "status": "active" }`          |
-| GET    | `/api/projects`      | Get all projects           | None                                                      |
-| GET    | `/api/projects/:id`  | Get a single project by ID | None                                                      |
-| PUT    | `/api/projects/:id`  | Update a project           | `{ "name": "Updated Name", "status": "completed" }`       |
-| DELETE | `/api/projects/:id`  | Delete a project           | None                                                      |
+#### 2. **Get all projects**
+- **Method**: `GET`
+- **Endpoint**: `/api/projects`
+- **Request Body**: None
+- **Response Body**:
+    ```json
+    [
+      {
+        "id": "12345",
+        "name": "Project Name",
+        "status": "active"
+      },
+      {
+        "id": "67890",
+        "name": "Another Project",
+        "status": "completed"
+      }
+    ]
+    ```
+
+#### 3. **Get a single project by ID**
+- **Method**: `GET`
+- **Endpoint**: `/api/projects/:id`
+- **Request Body**: None
+- **Response Body**:
+    ```json
+    {
+      "id": "12345",
+      "name": "Project Name",
+      "status": "active"
+    }
+    ```
+
+#### 4. **Update a project**
+- **Method**: `PUT`
+- **Endpoint**: `/api/projects/:id`
+- **Request Body**:
+    ```json
+    {
+      "name": "Updated Name",
+      "status": "completed"
+    }
+    ```
+- **Response Body**:
+    ```json
+    {
+      "id": "12345",
+      "name": "Updated Name",
+      "status": "completed"
+    }
+    ```
+
+#### 5. **Delete a project**
+- **Method**: `DELETE`
+- **Endpoint**: `/api/projects/:id`
+- **Request Body**: None
+- **Response Body**:
+    ```json
+    {
+      "message": "Project deleted successfully."
+    }
+    ```
 
 ---
 
-## Payment Management
+### Payment Management
 
-| Method | Endpoint            | Description                | Request Body                                              |
-|--------|---------------------|----------------------------|-----------------------------------------------------------|
-| POST   | `/api/payments`      | Create a payment           | `{ "projectId": "12345", "amount": 1000 }`               |
-| GET    | `/api/payments`      | Get all payments           | None                                                      |
-| GET    | `/api/payments/:id`  | Get a payment by ID        | None                                                      |
-| PUT    | `/api/payments/:id`  | Update payment status      | `{ "status": "paid" }`                                    |
+#### 1. **Create a payment**
+- **Method**: `POST`
+- **Endpoint**: `/api/payments`
+- **Request Body**:
+    ```json
+    {
+      "projectId": "12345",
+      "amount": 1000
+    }
+    ```
+- **Response Body**:
+    ```json
+    {
+      "id": "67890",
+      "projectId": "12345",
+      "amount": 1000,
+      "status": "pending"
+    }
+    ```
+
+#### 2. **Get all payments**
+- **Method**: `GET`
+- **Endpoint**: `/api/payments`
+- **Request Body**: None
+- **Response Body**:
+    ```json
+    [
+      {
+        "id": "67890",
+        "projectId": "12345",
+        "amount": 1000,
+        "status": "pending"
+      },
+      {
+        "id": "98765",
+        "projectId": "67890",
+        "amount": 2000,
+        "status": "paid"
+      }
+    ]
+    ```
+
+#### 3. **Get a payment by ID**
+- **Method**: `GET`
+- **Endpoint**: `/api/payments/:id`
+- **Request Body**: None
+- **Response Body**:
+    ```json
+    {
+      "id": "67890",
+      "projectId": "12345",
+      "amount": 1000,
+      "status": "pending"
+    }
+    ```
+
+#### 4. **Update payment status**
+- **Method**: `PUT`
+- **Endpoint**: `/api/payments/:id`
+- **Request Body**:
+    ```json
+    {
+      "status": "paid"
+    }
+    ```
+- **Response Body**:
+    ```json
+    {
+      "id": "67890",
+      "projectId": "12345",
+      "amount": 1000,
+      "status": "paid"
+    }
+    ```
 
 ---
 
-## CSV Functionality
+### CSV Functionality
 
-| Method | Endpoint            | Description                | Request Body                                              |
-|--------|---------------------|----------------------------|-----------------------------------------------------------|
-| GET    | `/api/csv/export`    | Export project data to CSV | None                                                      |
-| POST   | `/api/csv/import`    | Import projects from CSV   | Form-data: `{ file: <csv_file> }`                         |
+#### 1. **Export project data to CSV**
+- **Method**: `GET`
+- **Endpoint**: `/api/csv/export`
+- **Request Body**: None
+- **Response Body**: CSV file download (`projects.csv`)
+
+#### 2. **Import projects from CSV**
+- **Method**: `POST`
+- **Endpoint**: `/api/csv/import`
+- **Request Body**: 
+    - Form-data: `{ file: <csv_file> }`
+- **Response Body**:
+    ```json
+    {
+      "message": "Projects imported successfully.",
+      "count": 5
+    }
+    ```
 
 ---
 
-## Authentication
+### Authentication
 
-| Method | Endpoint            | Description                | Request Body                                              |
-|--------|---------------------|----------------------------|-----------------------------------------------------------|
-| POST   | `/api/auth/signup`   | Register a new user        | `{ "email": "user@example.com", "password": "password" }` |
-| POST   | `/api/auth/login`    | Login user and get token   | `{ "email": "user@example.com", "password": "password" }` |
+#### 1. **Register a new user**
+- **Method**: `POST`
+- **Endpoint**: `/api/auth/signup`
+- **Request Body**:
+    ```json
+    {
+      "email": "user@example.com",
+      "password": "password"
+    }
+    ```
+- **Response Body**:
+    ```json
+    {
+      "message": "User registered successfully.",
+      "user": {
+        "id": "123",
+        "email": "user@example.com"
+      }
+    }
+    ```
+
+#### 2. **Login user and get token**
+- **Method**: `POST`
+- **Endpoint**: `/api/auth/login`
+- **Request Body**:
+    ```json
+    {
+      "email": "user@example.com",
+      "password": "password"
+    }
+    ```
+- **Response Body**:
+    ```json
+    {
+      "token": "your_jwt_token"
+    }
+    ```
 
 ---
 
@@ -152,7 +340,11 @@ PORT=5000
 
 ### Import Projects from CSV
 - Send a `POST` request to `/api/csv/import` with a CSV file attached (key: `file`).
-
----
-
+- Response will be:
+    ```json
+    {
+      "message": "Projects imported successfully.",
+      "count": 5
+    }
+    ```
 
